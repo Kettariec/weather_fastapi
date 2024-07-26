@@ -1,0 +1,6 @@
+__pycache__
+.git
+.pytest_cache
+.venv
+.coverage
+weather_fastapi.db

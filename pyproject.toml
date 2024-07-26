@@ -5,6 +5,7 @@ description = ""
 authors = ["Kettariec <kettariec@gmail.com>"]
 readme = "README.md"
 
+
 [tool.poetry.dependencies]
 python = "^3.11"
 fastapi = {extras = ["all"], version = "^0.111.1"}
@@ -16,6 +17,7 @@ pytest-asyncio = "^0.23.8"
 pytest-cov = "^5.0.0"
 flake8 = "^7.1.0"
 isort = "^5.13.2"
+uvicorn = "^0.30.3"
 
 
 [build-system]
