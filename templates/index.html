@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #weather {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Погода в вашем городе</h1>
+
+    <form id="weather-form">
+        <label for="city">Введите название города:</label>
+        <input type="text" id="city" name="city" list="city-list" required>
+        <datalist id="city-list"></datalist>
+        <input type="hidden" id="user-id" name="user-id" value="user1">
+        <button type="submit">Получить погоду</button>
+    </form>
+
+    <div id="weather"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const cityInput = document.getElementById('city');
+            const cityList = document.getElementById('city-list');
+            const weatherDiv = document.getElementById('weather');
+            const userIdInput = document.getElementById('user-id');
+
+            const lastCity = localStorage.getItem('lastCity');
+            if (lastCity) {
+                cityInput.value = lastCity;
+                getWeather(lastCity, userIdInput.value);
+            }
+
+            cityInput.addEventListener('input', () => {
+                const query = cityInput.value;
+                if (query.length < 2) {
+                    return;
+                }
+
+                fetch('/autocomplete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    cityList.innerHTML = '';
+                    data.forEach(city => {
+                        const option = document.createElement('option');
+                        option.value = city;
+                        cityList.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Ошибка при автозаполнении:', error);
+                });
+            });
+
+            document.getElementById('weather-form').addEventListener('submit', event => {
+                event.preventDefault();
+                const city = cityInput.value;
+                getWeather(city, userIdInput.value);
+            });
+
+            function getWeather(city, userId) {
+                fetch('/weather', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ city, user_id: userId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        const weatherHtml = `
+                            <h2>Погода в ${city}</h2>
+                            <p>Температура: ${data.current_temperature}°C</p>
+                            <p>Влажность: ${data.current_humidity} %</p>
+                            <p>Скорость ветра: ${data.current_wind_speed} км/ч</p>
+                        `;
+                        weatherDiv.innerHTML = weatherHtml;
+                        localStorage.setItem('lastCity', city);
+                    } else {
+                        weatherDiv.innerHTML = `<p>Не удалось получить данные о погоде.</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Ошибка:', error);
+                    weatherDiv.innerHTML = `<p>Ошибка при запросе погоды.</p>`;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
