@@ -4,28 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background: #f0f8ff;
         }
         #weather {
             margin-top: 20px;
         }
+        .weather-card {
+            margin-top: 20px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .weather-card h2 {
+            margin-bottom: 20px;
+        }
+        .weather-card p {
+            margin: 0;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
-    <h1>Погода в вашем городе</h1>
+    <div class="container">
+        <h1 class="text-center my-4">Погода в вашем городе</h1>
 
-    <form id="weather-form">
-        <label for="city">Введите название города:</label>
-        <input type="text" id="city" name="city" list="city-list" required>
-        <datalist id="city-list"></datalist>
-        <input type="hidden" id="user-id" name="user-id" value="user1">
-        <button type="submit">Получить погоду</button>
-    </form>
+        <form id="weather-form" class="form-inline justify-content-center">
+            <div class="form-group mx-2 mb-2">
+                <label for="city" class="sr-only">Введите название города:</label>
+                <input type="text" class="form-control" id="city" name="city" list="city-list" placeholder="Введите название города" required>
+                <datalist id="city-list"></datalist>
+            </div>
+            <input type="hidden" id="user-id" name="user-id" value="user1">
+            <button type="submit" class="btn btn-primary mb-2">Получить погоду</button>
+        </form>
 
-    <div id="weather"></div>
+        <div id="weather" class="weather-card"></div>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
