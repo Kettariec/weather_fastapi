@@ -28,6 +28,20 @@
             margin: 0;
             font-size: 18px;
         }
+        .forecast-row {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+        }
+        .forecast-column {
+            min-width: 150px;
+            padding: 10px;
+            background: #e0f7fa;
+            border-radius: 10px;
+            margin: 5px;
+            flex: 1 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -109,6 +123,22 @@
                             <p>Температура: ${data.current_temperature}°C</p>
                             <p>Влажность: ${data.current_humidity} %</p>
                             <p>Скорость ветра: ${data.current_wind_speed} км/ч</p>
+                            <br>
+                            <h3>Прогноз на неделю</h3>
+                            <div class="forecast-row">
+                                ${data.weekly_forecast.map(forecast => `
+                                    <div class="forecast-column">
+                                        <p><strong>${forecast.date} (${forecast.day_of_week})</strong></p>
+                                        <p>Мин. температура: ${forecast.min_temp}°C</p>
+                                        <p>Макс. температура: ${forecast.max_temp}°C</p>
+                                        <p>Осадки: ${forecast.precipitation} мм</p>
+                                        <p>Мин. влажность: ${forecast.min_humidity} %</p>
+                                        <p>Макс. влажность: ${forecast.max_humidity} %</p>
+                                        <p>Мин. скорость ветра: ${forecast.min_wind_speed} км/ч</p>
+                                        <p>Макс. скорость ветра: ${forecast.max_wind_speed} км/ч</p>
+                                    </div>
+                                `).join('')}
+                            </div>
                         `;
                         weatherDiv.innerHTML = weatherHtml;
                         localStorage.setItem('lastCity', city);

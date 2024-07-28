@@ -18,6 +18,7 @@ pytest-cov = "^5.0.0"
 flake8 = "^7.1.0"
 isort = "^5.13.2"
 uvicorn = "^0.30.3"
+babel = "^2.15.0"
 
 
 [build-system]
