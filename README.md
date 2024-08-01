@@ -14,7 +14,7 @@
 Создайте образ и контейнер Docker с помощью команды "docker-compose up --build".
 
 
-## Структура проекта
+## Project structure
 
 templates/index.html - шаблон главной страницы
 
